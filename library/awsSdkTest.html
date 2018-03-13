@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Emoji Slots</title>
+    <link href="emojislots.css" rel="stylesheet" type="text/css">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.184.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        // Configure AWS SDK for JavaScript
+        AWS.config.update({region: 'us-east-1'});
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:1f5824ff-d2fb-4cb5-b9cd-ab92a360e188'});
+
+        var pullReturned = null;
+        var slotResults;
+        var isSpinning = false;
+
+        // Prepare to call Lambda function
+        var lambda = new AWS.Lambda({region: 'us-east-1', apiVersion: '2015-03-31'});
+        var pullParams = {
+            FunctionName : 'testBrowser',
+            InvocationType : 'RequestResponse',
+            LogType : 'None'
+        };
+
+        function initiatePull() {
+
+            lambda.invoke(pullParams, function(err, data) {
+                if (err) {
+                    prompt(err);
+                } else {
+                    pullResults = JSON.parse(data.Payload);
+                    displayPull();
+                }
+            });
+        }
+
+
+
+    </script>
+</head>
+<body>
+<div id="appframe">
+
+    <img id="slot_L" src="puppy.png" height="199" width="80" alt="slot wheel 1"/>
+    <img id="slot_M" src="puppy.png" height="199" width="80" alt="slot wheel 2"/>
+    <img id="slot_R" src="puppy.png" height="199" width="80" alt="slot wheel 3"/>
+    <img id="winner_light" src="winner.png" height="48" width="247" alt="winner indicator"/>
+
+</div>
+</body>
+</html>

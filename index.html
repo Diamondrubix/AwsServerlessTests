@@ -1,0 +1,32 @@
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.184.0.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+
+    AWS.config.update({region: 'us-east-1'});
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:1f5824ff-d2fb-4cb5-b9cd-ab92a360e188'});
+    /*
+    var lambda = new AWS.Lambda({
+        region:"us-east-1",
+        accessKeyId: "us-east-1:1f5824ff-d2fb-4cb5-b9cd-ab92a360e188",
+        secretAccessKey: "enter the secretAccesskey"
+    });
+    */
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'IDENTITY_POOL_ID',
+        Logins: {
+            'adam2': 'Password12'
+        }
+    });
+
+
+
+    function buttonPressed(){
+
+    }
+</script>
+
+
+<body>
+some text to show the webpage
+<input type="button" value="activateLambda" onclick="buttonPressed();">
+</body>

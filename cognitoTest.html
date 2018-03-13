@@ -1,0 +1,258 @@
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="/RobotAnalytics/public/library/apigClient.js"></script>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script src="/RobotAnalytics/public/library/jsbn.js"></script>
+<script src="/RobotAnalytics/public/library/jsbn2.js"></script>
+<script src="/RobotAnalytics/public/library/sjcl.js"></script>
+<script src="/RobotAnalytics/public/library/amazon-cognito-identity.min.js"></script>
+<script src="/RobotAnalytics/public/library/aws-cognito-sdk.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.184.0.min.js" xmlns="http://www.w3.org/1999/html"></script>
+<body>
+some text to show the webpage
+<!--<input type="button" value="activateLambda" onclick="lambdainvoke();">-->
+</body>
+
+<form action="action_page.php">
+    <div class="container">
+        <p>Please fill in this form to create an account.</p>
+        <hr>
+
+        <br>Email</br></label>
+        <input type="text" placeholder="Enter Email" id="email" name="email" required>
+
+        <br>username</br></label>
+        <input type="text" placeholder="Enter UserName" id="username" name="username" required>
+
+        <br>Password</br></label>
+        <input type="password" placeholder="Enter Password" id="password" name="psw" required>
+        <br>
+        <input type="button" value="login" onclick="login();">
+        <input type="button" value="makeRequest" onclick="makeCorsRequest(1,function(body){
+            secondary(body)
+        });">
+        <p id="p1">please Sign In</p>
+    </div>
+</form>
+
+<script>
+    hold = {}
+    checkForIP = false;
+    var inter
+    ec2IP = "no ip yet"
+    function secondary(response) {
+
+        //console.log(response.substr(1,1))
+        inter = setInterval(function () {
+            //console.log("interval?")
+            console.log("count")
+            if (checkForIP) {
+                if (response.substr(1, 1) == "i") {
+                    //console.log(response)
+                    makeCorsRequest(response, function(ipAddress){
+                        clearInterval(inter)
+                        console.log(ipAddress)
+                        ec2IP = ipAddress
+                        document.getElementById("p1").innerHTML = ipAddress;
+                    })
+
+                }
+            }
+            // method to be executed;
+        }, 1000);
+    }
+    idToken = "eyJraWQiOiJqRlBwaUUwY3lBeGZQVjJ6MUJoSHYzbzdBNjRaRCt1V0lkTTlHODhWNm9vPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwMWZkZGFiMC1hY2IyLTQzY2MtYjgyZi1mOTYwYjYwYmE4Y2QiLCJhdWQiOiI2dWtwcmpqc2c5amZiNzZubnFyNzFmZXA0ZiIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1MjAzODg4MDMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2NUOTVoRjdWdSIsImNvZ25pdG86dXNlcm5hbWUiOiJBZGFtIiwiZXhwIjoxNTIwMzkyNDAzLCJpYXQiOjE1MjAzODg4MDMsImVtYWlsIjoiYXJhdG9hZEBnbWFpbC5jb20ifQ.Pn382MVTCS7M95i9w9L64ADYHn-YqErrQKbhMO3CygJVVM_oVKgflZo0VmGJIzTcZExpBG-7D1a0m7Ps0c6v35IZkhNTZEmf63CBIdMazfqlpB2jfcezg1sNW0kh7UPN4w6HD3Oan0fNRZOhDSkiAQyf6ubbQ9ZoR6JEIWbXcyw0GY97rokp1kHNJc10hF2WvLFl-X3vZmzETN3NXk3aMKyqisglNVtogW8TCTkSIlxsethHZrjCSQ7VsaHBpZgyu5mHm4KhdXh3DfniC1SXr0LsCUDinYGzpJbaGAbwcUGrVmR8NwU4IqEyHi28zQEZfMwpK-4YLxAAUO3_oUlw_g"
+
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+            // XDomainRequest for IE.
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            // CORS not supported.
+            xhr = null;
+        }
+        return xhr;
+    }
+
+    // Helper method to parse the title tag from the response.
+    function getTitle(text) {
+        return text.match('<title>(.*)?</title>');
+    }
+    // Make the actual CORS request.
+    function makeCorsRequest(body, callback) {
+        document.getElementById("p1").innerHTML = "Starting your ec2 Instance!";
+        // This is a sample server that supports CORS.
+        var url = 'https://2eazmkpt54.execute-api.us-east-1.amazonaws.com/beta/ec2manipulation';
+        //var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
+
+        var xhr = createCORSRequest('POST', url);
+        if (!xhr) {
+            alert('CORS not supported');
+            return;
+        }
+
+        // Response handlers.
+        xhr.onload = function() {
+            var text = xhr.responseText;
+            var title = getTitle(text);
+            //console.log('header is '+title);
+            var resp = xhr.responseText
+            //console.log('body is '+ resp);
+            callback(resp)
+            //alert('Response from CORS request to ' + url + ': ' + title);
+        };
+
+        xhr.onerror = function() {
+            alert('Woops, there was an error making the request.');
+        };
+        xhr.setRequestHeader(
+            "Authorization", idToken   //If your header name has spaces or any other char not appropriate
+        );
+
+        xhr.send(body);
+        checkForIP = true;
+    }
+
+    function toUsername(email) {
+        return email.replace('@', '-at-');
+    }
+    function createCognitoUser(email) {
+        return new AmazonCognitoIdentity.CognitoUser({
+            Username: toUsername(email),
+            Pool: userPool
+        });
+    }
+ //doens't work yet
+    function verify() {
+        email = "diamondrubix@gmail.com"
+        username = "diamondrubix"
+        password = "Password123!";
+        code = 640691;
+        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
+            if (!err) {
+                onSuccess(result);
+            } else {
+                onFailure(err);
+            }
+        });
+    }
+
+    function login() {
+        document.getElementById("p1").innerHTML = "Logging in, please wait";
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        email = "aratoad@gmail.com"
+        username = "Adam"
+        password = "Password123!"
+        var poolData = {
+            UserPoolId : 'us-east-1_cT95hF7Vu', // Your user pool id here
+            ClientId : '6ukprjjsg9jfb76nnqr71fep4f' // Your client id here
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: username,
+            Password: password
+        });
+        let authData = {
+            Username: username,
+            Password: password
+        };
+        //let authDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authData);
+
+
+        let userData = {
+            Username: username,
+            Pool: userPool
+        };
+
+        let cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: (result) => {
+                document.getElementById("p1").innerHTML = "You are logged in";
+                hold = result;
+                console.log(cognitoUser);
+                idToken = cognitoUser.signInUserSession.idToken.jwtToken
+                //console.log("\n"+idToken)
+                var apigClient = apigClientFactory.newClient({
+                    sessionToken: 'SESSION_TOKEN', //OPTIONAL: If you are using temporary credentials you must include the session token
+                    region: 'eu-west-1' // OPTIONAL: The region where the API is deployed, by default this parameter is set to us-east-1
+                });
+            },
+            onFailure: (err) => {
+                document.getElementById("p1").innerHTML = "Login failed";
+                console.log(err);
+            }
+        });
+
+
+        var apigClient = apigClientFactory.newClient({
+            accessKey: 'ACCESS_KEY',
+            secretKey: 'SECRET_KEY',
+            sessionToken: 'SESSION_TOKEN', //OPTIONAL: If you are using temporary credentials you must include the session token
+            region: 'eu-west-1' // OPTIONAL: The region where the API is deployed, by default this parameter is set to us-east-1
+        });
+
+    }
+
+    function signUpUser(){
+        var email = document.getElementById("email").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        console.log(email)
+        console.log(username)
+
+        var poolData = {
+            UserPoolId : 'us-east-1_cT95hF7Vu', // Your user pool id here
+            ClientId : '6ukprjjsg9jfb76nnqr71fep4f' // Your client id here
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var attributeList = [];
+
+        var dataEmail = {
+            Name : 'email',
+            Value : email
+        };
+
+        var dataPhoneNumber = {
+            Name : 'phone_number',
+            Value : '+15555555555'
+        };
+        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+        //var attributePhoneNumber = new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber);
+
+        attributeList.push(attributeEmail);
+        //attributeList.push(attributePhoneNumber);
+
+        userPool.signUp(username, password, attributeList, null, function(err, result){
+            if (err) {
+                alert(err);
+                console.log(err);
+                return;
+            }
+            cognitoUser = result.user;
+            console.log('user name is ' + cognitoUser.getUsername());
+        });
+    }
+
+
+</script>

@@ -1,0 +1,41 @@
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.184.0.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+
+
+    AWS.config.update({region: 'us-east-1'});
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:1f5824ff-d2fb-4cb5-b9cd-ab92a360e188'});
+    /*
+    var lambda = new AWS.Lambda({
+        region:"us-east-1",
+        accessKeyId: "us-east-1:1f5824ff-d2fb-4cb5-b9cd-ab92a360e188",
+        secretAccessKey: "enter the secretAccesskey"
+    });
+    */
+    var lambda = new AWS.Lambda({region: 'us-east-1', apiVersion: '2015-03-31'});
+    var pullParams = {
+        FunctionName : 'testBrowser',
+        InvocationType : 'RequestResponse',
+        LogType : 'None'
+    };
+
+    function lambdainvoke(){
+        lambda.invoke({
+            FunctionName: "testBrowser",
+            Payload: JSON.stringify({"key1": "hi dad"})
+        },function(err,data){
+            if(!err) {
+                var result = JSON.parse(data.Payload)
+                console.log(result);
+            }else{
+                console.log("err: "+ err);
+            }
+        })
+    }
+</script>
+
+
+<body>
+some text to show the webpage
+<input type="button" value="activateLambda" onclick="lambdainvoke();">
+</body>
