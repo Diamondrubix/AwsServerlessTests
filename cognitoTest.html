@@ -43,14 +43,15 @@ some text to show the webpage
             secondary(body)
         });">
         <p id="p1">please Sign In</p>
+        <p id="p2">your key will apear here when it is ready</p>
     </div>
 </form>
 
 <script>
     hold = {}
     checkForIP = false;
-    var inter
-    ec2IP = "no ip yet"
+    var inter;
+    ec2IP = "no ip yet";
     function secondary(response) {
 
         //console.log(response.substr(1,1))
@@ -65,15 +66,35 @@ some text to show the webpage
                         console.log(ipAddress)
                         ec2IP = ipAddress
                         document.getElementById("p1").innerHTML = ipAddress;
+                        third(ipAddress);
                     })
 
                 }
             }
             // method to be executed;
-        }, 1000);
+        }, 2000);
     }
-    idToken = "eyJraWQiOiJqRlBwaUUwY3lBeGZQVjJ6MUJoSHYzbzdBNjRaRCt1V0lkTTlHODhWNm9vPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwMWZkZGFiMC1hY2IyLTQzY2MtYjgyZi1mOTYwYjYwYmE4Y2QiLCJhdWQiOiI2dWtwcmpqc2c5amZiNzZubnFyNzFmZXA0ZiIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1MjAzODg4MDMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2NUOTVoRjdWdSIsImNvZ25pdG86dXNlcm5hbWUiOiJBZGFtIiwiZXhwIjoxNTIwMzkyNDAzLCJpYXQiOjE1MjAzODg4MDMsImVtYWlsIjoiYXJhdG9hZEBnbWFpbC5jb20ifQ.Pn382MVTCS7M95i9w9L64ADYHn-YqErrQKbhMO3CygJVVM_oVKgflZo0VmGJIzTcZExpBG-7D1a0m7Ps0c6v35IZkhNTZEmf63CBIdMazfqlpB2jfcezg1sNW0kh7UPN4w6HD3Oan0fNRZOhDSkiAQyf6ubbQ9ZoR6JEIWbXcyw0GY97rokp1kHNJc10hF2WvLFl-X3vZmzETN3NXk3aMKyqisglNVtogW8TCTkSIlxsethHZrjCSQ7VsaHBpZgyu5mHm4KhdXh3DfniC1SXr0LsCUDinYGzpJbaGAbwcUGrVmR8NwU4IqEyHi28zQEZfMwpK-4YLxAAUO3_oUlw_g"
+    function third(response){
 
+        inter = setInterval(function () {
+            //console.log("interval?")
+            makeCorsRequest2(response, function(key){
+                console.log("count2")
+                console.log(key.substr(5, 6))
+                if (key.substr(5, 6) == "SHA256") {
+                    clearInterval(inter)
+                    document.getElementById("p2").innerHTML = key.substr(4, 51);
+                }else{
+                    document.getElementById("p2").innerHTML = "ec2 instance has yet to provide key, please wait";
+                }
+                console.log(key)
+                //ec2IP = key
+                //document.getElementById("p2").innerHTML = key;
+            })
+            // method to be executed;
+        }, 3000);
+    }
+    idToken = "eyJraWQiOiJqRlBwaUUwY3lBeGZQVjJ6MUJoSHYzbzdBNjRaRCt1V0lkTTlHODhWNm9vPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwMWZkZGFiMC1hY2IyLTQzY2MtYjgyZi1mOTYwYjYwYmE4Y2QiLCJhdWQiOiI2dWtwcmpqc2c5amZiNzZubnFyNzFmZXA0ZiIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1MjIxOTY3ODQsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2NUOTVoRjdWdSIsImNvZ25pdG86dXNlcm5hbWUiOiJBZGFtIiwiZXhwIjoxNTIyMjAwMzg0LCJpYXQiOjE1MjIxOTY3ODQsImVtYWlsIjoiYXJhdG9hZEBnbWFpbC5jb20ifQ.lxQE9vSjifUPWNujV7iC2X1C8yS9-V0GoOAd9_oM_-gpykSiiAgg1pYvfEMBuaAeHST7A5_fdOPfl32eiMG2hqz0ebW-vpWFSclPlrJGwfv2zhVWbmITMlRS6ZBmrOBh61CP0sa538tHKYzNNrUZvtzcE2QFtza9SJP0UNnCVz7cDX1iU1ElzD8BAwPjQoXh28AEkpB9xcy9K4HddL8pPRfRR2NeaOsPac2SQKyXjQfLw7TWCX01e2LJ9MOde9VcfKtmx_L3IgM3YINPrWVP4P9bIsqyzkptyQig0ExkOCZ75uhM095IyPnfMDiQ5FU1mrwPm59A5nelue9ocj7ZtQ"
     // Create the XHR object.
     function createCORSRequest(method, url) {
         var xhr = new XMLHttpRequest();
@@ -100,7 +121,6 @@ some text to show the webpage
         document.getElementById("p1").innerHTML = "Starting your ec2 Instance!";
         // This is a sample server that supports CORS.
         var url = 'https://2eazmkpt54.execute-api.us-east-1.amazonaws.com/beta/ec2manipulation';
-        //var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
 
         var xhr = createCORSRequest('POST', url);
         if (!xhr) {
@@ -114,7 +134,7 @@ some text to show the webpage
             var title = getTitle(text);
             //console.log('header is '+title);
             var resp = xhr.responseText
-            //console.log('body is '+ resp);
+            console.log(resp);
             callback(resp)
             //alert('Response from CORS request to ' + url + ': ' + title);
         };
@@ -125,7 +145,37 @@ some text to show the webpage
         xhr.setRequestHeader(
             "Authorization", idToken   //If your header name has spaces or any other char not appropriate
         );
+        xhr.send(body);
+        checkForIP = true;
+    }
+    function makeCorsRequest2(body, callback) {
+        //document.getElementById("p1").innerHTML = "Starting your ec2 Instance!";
+        // This is a sample server that supports CORS.
+        var url = 'https://2eazmkpt54.execute-api.us-east-1.amazonaws.com/beta/ssh';
 
+        var xhr = createCORSRequest('POST', url);
+        if (!xhr) {
+            alert('CORS not supported');
+            return;
+        }
+
+        // Response handlers.
+        xhr.onload = function() {
+            var text = xhr.responseText;
+            var title = getTitle(text);
+            //console.log('header is '+title);
+            var resp = xhr.responseText
+            console.log(resp);
+            callback(resp)
+            //alert('Response from CORS request to ' + url + ': ' + title);
+        };
+
+        xhr.onerror = function() {
+            alert('Woops, there was an error making the request.');
+        };
+        xhr.setRequestHeader(
+            "Authorization", idToken   //If your header name has spaces or any other char not appropriate
+        );
         xhr.send(body);
         checkForIP = true;
     }
