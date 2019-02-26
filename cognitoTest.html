@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/awsTests/library/lib/axios/dist/axios.standalone.js"></script>
+<!-- <script type="text/javascript" src="/awsTests/library/lib/axios/dist/axios.standalone.js"></script>
 <script type="text/javascript" src="/awsTests/library/lib/CryptoJS/rollups/hmac-sha256.js"></script>
 <script type="text/javascript" src="/awsTests/library/lib/CryptoJS/rollups/sha256.js"></script>
 <script type="text/javascript" src="/awsTests/library/lib/CryptoJS/components/hmac.js"></script>
@@ -9,15 +9,28 @@
 <script type="text/javascript" src="/awsTests/library/lib/apiGatewayCore/simpleHttpClient.js"></script>
 <script type="text/javascript" src="/awsTests/library/lib/apiGatewayCore/utils.js"></script>
 <script type="text/javascript" src="/awsTests/library/apigClient.js"></script>
+-->
+<script type="text/javascript" src="/AwsTests/library/lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="/AwsTests/library/lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="/AwsTests/library/apigClient.js"></script>
+
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-<script src="/awsTests/library/jsbn.js"></script>
-<script src="/awsTests/library/jsbn2.js"></script>
-<script src="/awsTests/library/sjcl.js"></script>
-<script src="/awsTests/library/amazon-cognito-identity.min.js"></script>
-<script src="/awsTests/library/aws-cognito-sdk.js"></script>
+<script src="/AwsTests/library/jsbn.js"></script>
+<script src="/AwsTests/library/jsbn2.js"></script>
+<script src="/AwsTests/library/sjcl.js"></script>
+<script src="/AwsTests/library/amazon-cognito-identity.min.js"></script>
+<script src="/AwsTests/library/aws-cognito-sdk.js"></script>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.184.0.min.js" xmlns="http://www.w3.org/1999/html"></script>
 <body>
 some text to show the webpage
@@ -205,9 +218,6 @@ some text to show the webpage
         document.getElementById("p1").innerHTML = "Logging in, please wait";
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
-        //email = "aratoad@gmail.com"
-        //username = "Adam"
-        //password = "Password123!"
         var poolData = {
             UserPoolId : 'us-east-1_cT95hF7Vu', // Your user pool id here
             ClientId : '6ukprjjsg9jfb76nnqr71fep4f' // Your client id here
@@ -260,9 +270,11 @@ some text to show the webpage
     }
 
     function signUpUser(){
+        
         var email = document.getElementById("email").value;
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
+
         console.log(email)
         console.log(username)
 
